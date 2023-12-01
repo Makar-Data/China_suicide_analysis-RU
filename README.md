@@ -1,4 +1,4 @@
-# China_suicide_analysis
+# Suicide Analysis Project
 
 Аналитический обзор статистики суицидов в Шаньдуне, Китай (2009-2011)
 
