@@ -15,7 +15,7 @@
 
 ---
 
-### Этап 1. Чистка данных и Exploratory Data Analysis
+### Этап 1. Чистка данных
 
 Датасет уже находился в пригодном состоянии. Проведены несложные процедуры очистки SQL Server:
 - Проверка на дубликаты колонок
@@ -88,3 +88,9 @@ INTO suicide_china
 FROM suicide_china_original;
 
 ```
+
+В итоге получаем таблицу suicide_china, готовую к анализу
+
+---
+
+### Этап 2. Exploratory Data Analysis
