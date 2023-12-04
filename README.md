@@ -159,4 +159,4 @@ ON suicide_china.Person_ID = ints.Person_ID;
 ---
 
 ## Этап 2. Exploratory Data Analysis
-Для практики вместо сводных таблиц Pandas будут использоваться, где это возможно, таблицы SQL Server.
+Для практики вместо сводных таблиц Pandas использовались, где это возможно, таблицы SQL Server.
