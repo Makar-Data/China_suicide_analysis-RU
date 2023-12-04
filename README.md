@@ -1,6 +1,6 @@
 # Suicide Analysis Project [UNDER CONSTRUCTION]
 
-Аналитический обзор [статистики суицидов в Шаньдуне, Китай (2009-2011)](https://www.kaggle.com/datasets/utkarshx27/suicide-attempts-in-shandong-china)
+Аналитический обзор [статистики суицидов](https://www.kaggle.com/datasets/utkarshx27/suicide-attempts-in-shandong-china) в Шаньдуне, Китай (2009-2011)
 Цель - практика навыков чистки данных, проверки статистических гипотез, создания регрессионных моделей и визуализации данных.
 
 Постановка проблемы
