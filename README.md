@@ -38,7 +38,7 @@ FROM suicide_china_original ) Src;
 SELECT Person_ID, Hospitalised, Died, Urban, [Year], [Month], Sex, Age, Education, Occupation, Method, COUNT(*) as Amount
 FROM suicide_china_original
 GROUP BY Person_ID, Hospitalised, Died, Urban, [Year], [Month], Sex, Age, Education, Occupation, Method
-HAVING COUNT(*) > 1
+HAVING COUNT(*) > 1;
 
 --Проверка на NaN-значения--
 SET NOCOUNT ON
@@ -60,7 +60,7 @@ EXEC sp_executesql @sql
 SELECT * 
 FROM #Nulls
 
-DROP TABLE #Nulls
+DROP TABLE #Nulls;
 
 --Форматирование и очистка--
 SELECT
