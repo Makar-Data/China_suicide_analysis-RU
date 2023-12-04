@@ -16,3 +16,39 @@
 ---
 
 ### Этап 1. Чистка данных и Exploratory Data Analysis
+
+Датасет уже находился в пригодном состоянии. Были проведены несложные процедуры очистки:
+- Удаление лишней колонки
+- ПРОВЕРКА НА ДУБЛИКАТЫ
+- Переименование полей с названиями, совпадающими с синтаксисом SQL
+- Перевод значений в строчные буквы
+- Удаление лишних значений
+- Перевод бинарных значений в 1 и 0
+- Перенос очищенных данных в новую таблицу для сохранения целостности оригинала
+```SQL
+--Проверка равенства column1 и Person_ID--
+SELECT *, CASE WHEN entries = of_them_equal THEN 1 ELSE 0 END AS col_equality_check
+FROM (
+SELECT COUNT(*) AS entries,
+COUNT(CASE WHEN column1 = Person_ID THEN 1 ELSE 0 END) AS of_them_equal
+FROM suicide_china_original ) Src;
+
+--Форматирование и очистка--
+SELECT
+Person_ID,
+(CASE WHEN Hospitalised = 'yes' THEN 1 ELSE 0 END) AS Hospitalised,
+(CASE WHEN Died = 'yes' THEN 1 ELSE 0 END) AS Died,
+(CASE WHEN Urban = 'yes' THEN 1 ELSE 0 END) AS Urban,
+[Year] AS Yr,
+[Month] AS Mth,
+Sex,
+Age,
+LOWER(TRIM(Education)) AS Education,
+Occupation,
+LOWER(TRIM(method)) AS Method
+
+INTO suicide_china
+
+FROM suicide_china_original;
+
+```
