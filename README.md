@@ -89,7 +89,7 @@ FROM suicide_china_original;
 
 ```
 
-В итоге получаем таблицу suicide_china, готовую к анализу
+В итоге получаем таблицу suicide_china, готовую к анализу.
 
 ---
 
