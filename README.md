@@ -20,7 +20,7 @@
 Датасет уже находился в пригодном состоянии. Проведены несложные процедуры очистки SQL Server:
 - Проверка на дубликаты колонок
 - Проверка на дубликаты наблюдений
-- ПРОВЕРКА НА NaN
+- Проверка на NaN-значения
 - Переименование полей с названиями, совпадающими с синтаксисом SQL
 - Перевод значений в строчные буквы
 - Удаление лишних значений
@@ -40,7 +40,7 @@ FROM suicide_china_original
 GROUP BY Person_ID, Hospitalised, Died, Urban, [Year], [Month], Sex, Age, Education, Occupation, Method
 HAVING COUNT(*) > 1
 
---Проверка на NaN-значения
+--Проверка на NaN-значения--
 SET NOCOUNT ON
 DECLARE @Schema NVARCHAR(100) = 'dbo'
 DECLARE @Table NVARCHAR(100) = 'suicide_china_original'
