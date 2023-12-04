@@ -168,3 +168,7 @@ ON suicide_china.Person_ID = ints.Person_ID;
 
 ## Этап 2. Exploratory Data Analysis
 Для практики вместо сводных таблиц Pandas использовались, где это возможно, таблицы SQL Server.
+
+https://www.kaggle.com/code/micaeld/suicide-attempts-in-shandong-eda
+https://www.kaggle.com/code/alptugyilmaz/suicide-attempts-in-shandong-china-eda
+https://www.kaggle.com/code/usman5659/sucide-attempts-in-china-shandongeda
