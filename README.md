@@ -47,10 +47,10 @@ DECLARE @Table NVARCHAR(100) = 'suicide_china_original'
 DECLARE @sql NVARCHAR(MAX) =''
 IF OBJECT_ID ('tempdb..#Nulls') IS NOT NULL DROP TABLE #Nulls
 
-CREATE TABLE #Nulls (TableName sysname, ColumnName sysname , ColumnPosition int ,NullCount int , NonNullCount int)
+CREATE TABLE #Nulls (TableName sysname, ColumnName sysname, ColumnPosition int, NullCount int, NonNullCount int)
 
 SELECT @sql += 'SELECT
-'''+TABLE_NAME+''' AS TableName ,
+'''+TABLE_NAME+''' AS TableName,
 '''+COLUMN_NAME+''' AS ColumnName,
 '''+CONVERT(VARCHAR(5),ORDINAL_POSITION)+''' AS ColumnPosition,
 SUM(CASE WHEN '+COLUMN_NAME+' IS NULL THEN 1 ELSE 0 END) CountNulls,
