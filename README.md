@@ -161,7 +161,7 @@ ON suicide_china.Person_ID = ints.Person_ID;
 ```
 
 В итоге получаем таблицу [suicide_china](suicide_china.rpt), готовую к анализу.
-[SQL документ](1.Data_clean.sql) кода так же имеется в репозитории.
+[SQL документ](1. Data_clean.sql) кода так же имеется в репозитории.
 
 ---
 
