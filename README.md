@@ -160,7 +160,7 @@ FROM suicide_china
 ON suicide_china.Person_ID = ints.Person_ID;
 ```
 
-В итоге получаем таблицу suicide_china (suicide_china.rpt), готовую к анализу.
+В итоге получаем таблицу [suicide_china](suicide_china.rpt), готовую к анализу.
 
 ---
 
