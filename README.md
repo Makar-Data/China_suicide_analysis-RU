@@ -489,8 +489,8 @@ def survey(number_results, percentage_results, category_names):
         text_label = zip(xcenters, numbers)
         for y, (x, c) in enumerate(text_label):
             alpha = 1 if c != 0 else 0
-            ax.text(x, y, str(int(c)),
-                    ha='center', va='center', color=text_color, alpha=alpha)
+            ax.text(x, y+0.06, str(int(c)),
+                    ha='center', va='center', color=text_color, alpha=alpha, fontsize=8)
     ax.legend(ncol=5, bbox_to_anchor=(0, 1),
               loc='lower left', fontsize='small')
     return fig, ax
@@ -501,5 +501,4 @@ survey(number_results, percentage_results, category_names)
 plt.tight_layout()
 plt.show()
 ```
-
-![0 5](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/f8c529c2-091e-43bb-9f95-3a17095b98e3)
+![0 5](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/619c7daf-796d-4aa8-a98f-7979ec0d6d6e)
