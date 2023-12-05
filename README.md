@@ -352,18 +352,22 @@ pyramid_df['Female_d_Text'] = (pyramid_df['Female_Width'] + pyramid_df['Female_d
 pyramid_df['Female_l_Text'] = pyramid_df['Female_d'] / 2
 
 for idx in range(len(pyramid_df)):
+    alpha_ = 1 if pyramid_df['Male_d_Text'][idx] != 0.5 else 0
+    alpha_ = 1 if pyramid_df['Male_l_Text'][idx] != 0 else 0
+    alpha = 1 if pyramid_df['Female_d_Text'][idx] != 0 else 0
+    alpha = 1 if pyramid_df['Female_l_Text'][idx] != 0 else 0
     plt.text(x=pyramid_df['Male_d_Text'][idx], y=idx,
              s='{}%'.format(round(pyramid_df['Male_d'][idx], 1)),
-             fontsize=14, ha='center', va='center')
+             fontsize=14, ha='center', va='center', alpha=alpha)
     plt.text(x=pyramid_df['Male_l_Text'][idx], y=idx,
              s='{}%'.format(round(pyramid_df['Male_l'][idx], 1)),
-             fontsize=14, ha='center', va='center')
+             fontsize=14, ha='center', va='center', alpha=alpha)
     plt.text(x=pyramid_df['Female_d_Text'][idx], y=idx,
              s='{}%'.format(round(pyramid_df['Female_l'][idx], 1)),
-             fontsize=14, ha='center', va='center')
+             fontsize=14, ha='center', va='center', alpha=alpha)
     plt.text(x=pyramid_df['Female_l_Text'][idx], y=idx,
              s='{}%'.format(round(pyramid_df['Female_d'][idx], 1)),
-             fontsize=14, ha='center', va='center')
+             fontsize=14, ha='center', va='center', alpha=alpha)
 
 # Завершение визуализации
 plt.xlim(-6, 6)
@@ -378,7 +382,8 @@ plt.legend(fontsize=20, shadow=True)
 plt.tight_layout()
 plt.show()
 ```
-![0 4 4](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/21f0de3c-125b-4d32-bc3a-fb02d46570e4)
+![0 4 4](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/e46b235d-6ec3-4a19-8ab8-269f93202b48)
+
 
 Ознакомление с уникальными значениями.
  
