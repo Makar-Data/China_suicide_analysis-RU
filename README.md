@@ -213,8 +213,6 @@ legend = [Patch(facecolor='tab:blue', edgecolor='tab:blue', label='Winter'),
           Patch(facecolor='tab:red', edgecolor='tab:red', label='Summer'),
           Patch(facecolor='tab:olive', edgecolor='tab:olive', label='Autumn'),]
 
-print(df)
-
 plt.style.use("seaborn")
 
 plt.bar(x=df['YrMth'], height=df['Cases'], color=[colors[i] for i in df['Mth']])
@@ -230,3 +228,49 @@ plt.show()
 ```
 ![0 3](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/7973c6e6-1231-4e01-aea8-912edce9af13)
 
+Видны сезонные тренды. В летние как правило фиксируется максимум случаев, а в зимние - минимум.
+
+Ознакомимся с уникальными значениями.
+![0 4](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/78d9ae79-9350-4e32-8abb-ba088969fa83)
+
+```Python
+import pyodbc as db
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+conn = db.connect('Driver={SQL Server};'
+                      'Server=Mai-PC\SQLEXPRESS;'
+                      'Database=T;'
+                      'Trusted_Connection=yes;')
+
+query = '''
+SELECT Occupation, COUNT(*) AS Amount
+FROM suicide_china
+GROUP BY Occupation
+ORDER BY Amount DESC;
+'''
+
+sql_query = pd.read_sql_query(query, conn)
+df = pd.DataFrame(sql_query)
+df.loc[df['Amount'] < 30, 'Occupation'] = 'other'
+df = df.groupby('Occupation')['Amount'].sum().reset_index().sort_values(by='Amount', ascending=False)
+
+palette = sns.color_palette('hls', len(df))
+plt.style.use("seaborn")
+
+plt.pie(df['Amount'],
+        labels=df['Occupation'] + " " + "(" + df['Amount'].astype(str) + ")",
+        colors=palette, autopct="%1.1f%%",
+        pctdistance=0.8, labeldistance=1.05,
+        wedgeprops={'edgecolor': 'black', 'linewidth': 0.8})
+
+plt.title('Occupation distribution')
+plt.tight_layout()
+plt.show()
+```
+![0 4 1](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/77b71403-d623-444b-9d14-5edcb4caefbc)
+
+Аналогичный код был применён к распределению образования и методов:
+![0 4 2](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/80f454d7-d7f3-4c9f-acfb-b2773b99d0d9)
+![0 4 3](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/20312bdf-4c85-4597-8d90-cb2c59b7493d)
