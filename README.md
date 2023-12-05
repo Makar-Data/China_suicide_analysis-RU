@@ -196,8 +196,6 @@ GROUP BY Yr, Mth
 ORDER BY Yr, Mth;
 '''
 
-
-
 sql_query = pd.read_sql_query(query, conn)
 df = pd.DataFrame(sql_query)
 
