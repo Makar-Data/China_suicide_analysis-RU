@@ -80,7 +80,8 @@ SELECT
 Person_ID,
 (CASE WHEN Hospitalised = 'yes' THEN 1 ELSE 0 END) AS Hospitalised,
 (CASE WHEN Died = 'yes' THEN 1 ELSE 0 END) AS Died,
-(CASE WHEN Urban = 'yes' THEN 1 ELSE 0 END) AS Urban, ----------------------------------------------------------------------------------------------- Поменять и файл
+(CASE WHEN Urban = 'yes' THEN 1 
+WHEN Urban = 'no' THEN 0 ELSE NULL END) AS Urban,
 [Year] AS Yr,
 [Month] AS Mth,
 Sex,
