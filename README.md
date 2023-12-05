@@ -160,9 +160,9 @@ FROM suicide_china
 ON suicide_china.Person_ID = ints.Person_ID;
 ```
 
-SQL документ [2](1.Data_clean.sql) приведён в репозитории.
+SQL документ [[2]](1.Data_clean.sql) приведён в репозитории.
 
-В итоге получаем таблицу suicide_china [3](suicide_china.rpt), готовую к анализу.
+В итоге получаем таблицу suicide_china [[3]](suicide_china.rpt), готовую к анализу.
 
 ---
 
