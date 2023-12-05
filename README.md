@@ -23,7 +23,7 @@
 
 ## Этап 1. Чистка и преобразование данных
 
-Датасет [suicide_china_original](suicide_china_original.csv) уже находился в пригодном состоянии. Проведены несложные процедуры очистки SQL Server:
+Датасет suicide_china_original [1](suicide_china_original.csv) уже находился в пригодном состоянии. Проведены несложные процедуры очистки SQL Server:
 - Проверка на дубликаты колонок
 - Проверка на дубликаты наблюдений
 - Проверка на NaN-значения
@@ -160,9 +160,9 @@ FROM suicide_china
 ON suicide_china.Person_ID = ints.Person_ID;
 ```
 
-[SQL документ](1.Data_clean.sql) кода приведён в репозитории.
+SQL документ [2](1.Data_clean.sql) приведён в репозитории.
 
-В итоге получаем таблицу [suicide_china](suicide_china.rpt), готовую к анализу.
+В итоге получаем таблицу suicide_china [3](suicide_china.rpt), готовую к анализу.
 
 ---
 
