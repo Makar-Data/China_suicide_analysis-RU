@@ -169,10 +169,6 @@ ON suicide_china.Person_ID = ints.Person_ID;
 ## Этап 2. Exploratory Data Analysis
 Для практики вместо сводных таблиц Pandas использовались, где это возможно, таблицы SQL Server.
 
-https://www.kaggle.com/code/micaeld/suicide-attempts-in-shandong-eda
-https://www.kaggle.com/code/alptugyilmaz/suicide-attempts-in-shandong-china-eda
-https://www.kaggle.com/code/usman5659/sucide-attempts-in-china-shandongeda
-
 Сначала была произведена оценка временных рамок и хронологического распределения наблюдений. Каждый год (2009, 2010, 2011) состоял из 12 месяцев \[0.1]. Случаи были сгруппированы по годам и кварталам и занесены в сводную таблцицу с процентным соотношением \[0.2].
 
 С помощью Python и Pyodbc был создан barplot хронологического распределения случаев:
