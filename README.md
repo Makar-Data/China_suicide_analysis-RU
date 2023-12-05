@@ -209,7 +209,7 @@ legend = [Patch(facecolor='tab:blue', edgecolor='tab:blue', label='Winter'),
           Patch(facecolor='tab:red', edgecolor='tab:red', label='Summer'),
           Patch(facecolor='tab:olive', edgecolor='tab:olive', label='Autumn'),]
 
-plt.style.use("seaborn")
+plt.style.use('seaborn')
 
 plt.bar(x=df['YrMth'], height=df['Cases'], color=[colors[i] for i in df['Mth']])
 plt.xticks(fontsize=10, rotation=90)
@@ -343,11 +343,11 @@ df.loc[df['Amount'] < 30, 'Occupation'] = 'other'
 df = df.groupby('Occupation')['Amount'].sum().reset_index().sort_values(by='Amount', ascending=False)
 
 palette = sns.color_palette('hls', len(df))
-plt.style.use("seaborn")
+plt.style.use('seaborn')
 
 plt.pie(df['Amount'],
-        labels=df['Occupation'] + " " + "(" + df['Amount'].astype(str) + ")",
-        colors=palette, autopct="%1.1f%%",
+        labels=df['Occupation'] + ' ' + '(' + df['Amount'].astype(str) + ')',
+        colors=palette, autopct='%1.1f%%',
         pctdistance=0.8, labeldistance=1.05,
         wedgeprops={'edgecolor': 'black', 'linewidth': 0.8})
 
@@ -380,7 +380,7 @@ df = pd.DataFrame(sql_query)
 df_died = df.loc[df['Died'] == 1]  
 df_lived = df.loc[df['Died'] == 0]  
   
-plt.style.use("seaborn")  
+plt.style.use('seaborn')  
 palette = sns.color_palette('hls', df['Method'].nunique())  
 legs = df['Method'].unique()  
 colors = palette.as_hex()  
@@ -399,19 +399,19 @@ fig.suptitle('Methods by Outcome')
 ax1 = fig.add_subplot(121)  
 ax1.set_title('Survived')  
 ax1.pie(df_lived['Amount'],  
-        colors=lived_palette, autopct="%1.1f%%",  
+        colors=lived_palette, autopct='%1.1f%%',  
         pctdistance=0.8, labeldistance=1.05,  
         wedgeprops={'edgecolor': 'black', 'linewidth': 0.8})  
-ax1.legend(labels=df_lived['Method'] + " " + "(" + df_lived['Amount'].astype(str) + ")",  
+ax1.legend(labels=df_lived['Method'] + ' ' + '(' + df_lived['Amount'].astype(str) + ')',  
            loc=(0,-0.2), ncol=2)  
   
 ax2 = fig.add_subplot(122)  
 ax2.set_title('Died')  
 ax2.pie(df_died['Amount'],  
-        colors=died_palette, autopct="%1.1f%%",  
+        colors=died_palette, autopct='%1.1f%%',  
         pctdistance=0.8, labeldistance=1.05,  
         wedgeprops={'edgecolor': 'black', 'linewidth': 0.8})  
-ax2.legend(labels=df_died['Method'] + " " + "(" + df_died['Amount'].astype(str) + ")",  
+ax2.legend(labels=df_died['Method'] + ' ' + '(' + df_died['Amount'].astype(str) + ')',  
            loc=(0,-0.2), ncol=2)  
   
 plt.tight_layout()  
@@ -448,14 +448,14 @@ category_names = ['pesticide', 'hanging', 'other poison', 'poison unspec', 'unsp
 questions = list(needed.columns.values)
 raws = []
 
-list_obj_cols = needed.columns[needed.dtypes == "object"].tolist()
+list_obj_cols = needed.columns[needed.dtypes == 'object'].tolist()
 for obj_col in list_obj_cols:
     needed[obj_col] = needed[obj_col].astype(pd.api.types.CategoricalDtype(categories=category_names))
 
-list_cat_cols = needed.columns[needed.dtypes == "category"].tolist()
+list_cat_cols = needed.columns[needed.dtypes == 'category'].tolist()
 for cat_col in list_cat_cols:
-    dc = needed[cat_col].value_counts().sort_index().reset_index().to_dict(orient="list")
-    raws.append(dc["count"])
+    dc = needed[cat_col].value_counts().sort_index().reset_index().to_dict(orient='list')
+    raws.append(dc['count'])
 
 results = [[num / sum(brackets) * 100 for num in brackets] for brackets in raws]
 number_results = {questions[i]: raws[i] for i in range(len(questions))}
@@ -483,14 +483,14 @@ def survey(number_results, percentage_results, category_names):
         numbers = np.array(list(number_results.values()))[:, i]
 
         r, g, b = color
-        text_color = "white" if r * g * b < 0.5 else "darkgrey"
+        text_color = 'white' if r * g * b < 0.5 else 'darkgrey'
         text_label = zip(xcenters, numbers)
         for y, (x, c) in enumerate(text_label):
             alpha = 1 if c != 0 else 0
             ax.text(x, y, str(int(c)),
-                    ha="center", va="center", color=text_color, alpha=alpha)
+                    ha='center', va='center', color=text_color, alpha=alpha)
     ax.legend(ncol=5, bbox_to_anchor=(0, 1),
-              loc="lower left", fontsize="small")
+              loc='lower left', fontsize='small')
     return fig, ax
 
 
