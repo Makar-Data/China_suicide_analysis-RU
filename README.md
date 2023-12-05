@@ -304,7 +304,7 @@ FROM suicide_china;
 sql_query = pd.read_sql_query(query, conn)
 df = pd.DataFrame(sql_query)
 
-# Возрастные интервалы создаются снова, чтобы находиться в верной последовательности (??????????????????????????????????????????????????????????????)
+# Повторное создание интервалов для верной последовательности и сохранения возрастов без наблюдений
 df['Age_Interval'] = pd.cut(df['Age'],
                             bins=[0, 4, 9, 14, 19, 24, 29, 34, 39, 44, 49,
                                   54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 104],
@@ -312,25 +312,29 @@ df['Age_Interval'] = pd.cut(df['Age'],
                                     '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75-79',
                                     '80-84', '85-89', '90-94', '95-99', '100-104'])
 
+# Создание матрицы значений
 crosstab = pd.crosstab(index=df['Age_Interval'], columns=[df['Sex'], df['Died']], dropna=False, normalize='all')
 male_died = [number * 100 for number in crosstab['male'][1]]
 female_died = [number * 100 for number in crosstab['female'][1]]
 male_lived = [number * 100 for number in crosstab['male'][0]]
 female_lived = [number * 100 for number in crosstab['female'][0]]
 
+# Трансформация матрицы в формат, пригодный для построения пирамиды
 age = ['0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64',
        '65-69', '70-74', '75-79', '80-84', '85-89', '90-94', '95-99', '100-104']
 
 pyramid_df = pd.DataFrame({'Age': age, 'Male_l': male_lived, 'Male_d': male_died,
                            'Female_d': female_died, 'Female_l': female_lived})
 
+# Создание полей со сведениями об относительном положении сегментов гистограммы
 pyramid_df['Female_Width'] = pyramid_df['Female_d'] + pyramid_df['Female_l']
 pyramid_df['Male_Width'] = pyramid_df['Male_d'] + pyramid_df['Male_l']
 pyramid_df['Male_d_Left'] = -pyramid_df['Male_d']
 pyramid_df['Male_l_Left'] = -pyramid_df['Male_Width']
 
-plt.style.use('seaborn')
-fig = plt.figure(figsize=(15, 10))
+# Формирование визуализации
+plt.style.use('seaborn-v0_8')
+fig = plt.figure(figsize=(15,10))
 
 plt.barh(y=pyramid_df['Age'], width=pyramid_df['Female_d'],
          color='tab:red', label='Females Died', edgecolor='black')
@@ -341,6 +345,7 @@ plt.barh(y=pyramid_df['Age'], width=pyramid_df['Male_d'], left=pyramid_df['Male_
 plt.barh(y=pyramid_df['Age'], width=pyramid_df['Male_l'], left=pyramid_df['Male_l_Left'],
          color='tab:cyan', label='Males Survived', edgecolor='black')
 
+# Определение позиции и формата надписей на графике
 pyramid_df['Male_d_Text'] = pyramid_df['Male_d_Left'] / 2
 pyramid_df['Male_l_Text'] = (pyramid_df['Male_l_Left'] + pyramid_df['Male_d_Left']) / 2
 pyramid_df['Female_d_Text'] = (pyramid_df['Female_Width'] + pyramid_df['Female_d']) / 2
@@ -360,7 +365,8 @@ for idx in range(len(pyramid_df)):
              s='{}%'.format(round(pyramid_df['Female_d'][idx], 1)),
              fontsize=14, ha='center', va='center')
 
-plt.xlim(-6, 6)  ###OUT#####
+# Завершение визуализации
+plt.xlim(-6, 6)
 plt.xticks(range(-6, 7), ['{}%'.format(i) for i in range(-6, 7)], fontsize=14)
 plt.yticks(fontsize=14)
 
