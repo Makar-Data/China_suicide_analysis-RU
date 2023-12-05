@@ -560,3 +560,5 @@ plt.tight_layout()
 plt.show()
 ```
 ![0 5](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/619c7daf-796d-4aa8-a98f-7979ec0d6d6e)
+
+Как результат EDA-исследования, (что узнали, как это поможет)
