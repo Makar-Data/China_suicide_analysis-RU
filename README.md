@@ -172,3 +172,63 @@ ON suicide_china.Person_ID = ints.Person_ID;
 https://www.kaggle.com/code/micaeld/suicide-attempts-in-shandong-eda
 https://www.kaggle.com/code/alptugyilmaz/suicide-attempts-in-shandong-china-eda
 https://www.kaggle.com/code/usman5659/sucide-attempts-in-china-shandongeda
+
+Сначала была произведена оценка временных рамок и хронологического распределения наблюдений. Каждый год (2009, 2010, 2011) состоял из 12 месяцев \[0.1]. Случаи были сгруппированы по годам и кварталам и занесены в сводную таблцицу с процентным соотношением \[0.2].
+
+С помощью Python и Pyodbc была создана гистограмма хронологического распределения случаев:
+```Python
+import pyodbc as db
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
+
+conn = db.connect('Driver={SQL Server};'
+                      'Server=Mai-PC\SQLEXPRESS;'
+                      'Database=T;'
+                      'Trusted_Connection=yes;')
+
+query = '''
+SELECT CONCAT(Yr, '-', Mth) AS YrMth,
+Mth,
+COUNT(*) AS Cases
+FROM suicide_china
+GROUP BY Yr, Mth
+ORDER BY Yr, Mth;
+'''
+
+
+
+sql_query = pd.read_sql_query(query, conn)
+df = pd.DataFrame(sql_query)
+
+df['YrMth'] = pd.to_datetime(df['YrMth'])
+df['YrMth'] = df['YrMth'].dt.date.apply(lambda x: x.strftime('%Y-%m'))
+
+colors = {1: 'tab:blue', 2: 'tab:blue',
+          3: 'tab:green', 4: 'tab:green', 5: 'tab:green',
+          6: 'tab:red', 7: 'tab:red', 8: 'tab:red',
+          9: 'tab:olive', 10: 'tab:olive', 11: 'tab:olive',
+          12: 'tab:blue'}
+
+legend = [Patch(facecolor='tab:blue', edgecolor='tab:blue', label='Winter'),
+          Patch(facecolor='tab:green', edgecolor='tab:green', label='Spring'),
+          Patch(facecolor='tab:red', edgecolor='tab:red', label='Summer'),
+          Patch(facecolor='tab:olive', edgecolor='tab:olive', label='Autumn'),]
+
+print(df)
+
+plt.style.use("seaborn")
+
+plt.bar(x=df['YrMth'], height=df['Cases'], color=[colors[i] for i in df['Mth']])
+plt.xticks(fontsize=10, rotation=90)
+
+plt.title('Suicide attempts in Shandong over time')
+plt.xlabel('Date')
+plt.ylabel('Cases')
+
+plt.legend(handles=legend, loc='upper left')
+plt.tight_layout()
+plt.show()
+```
+![0 3](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/7973c6e6-1231-4e01-aea8-912edce9af13)
+
