@@ -448,14 +448,14 @@ category_names = ['pesticide', 'hanging', 'other poison', 'poison unspec', 'unsp
 questions = list(needed.columns.values)
 raws = []
 
-list_obj_cols = needed.columns[needed.dtypes == 'object'].tolist()
+list_obj_cols = needed.columns[needed.dtypes == "object"].tolist()
 for obj_col in list_obj_cols:
     needed[obj_col] = needed[obj_col].astype(pd.api.types.CategoricalDtype(categories=category_names))
 
-list_cat_cols = needed.columns[needed.dtypes == 'category'].tolist()
+list_cat_cols = needed.columns[needed.dtypes == "category"].tolist()
 for cat_col in list_cat_cols:
-    dc = needed[cat_col].value_counts().sort_index().reset_index().to_dict(orient='list')
-    raws.append(dc['count'])
+    dc = needed[cat_col].value_counts().sort_index().reset_index().to_dict(orient="list")
+    raws.append(dc["count"])
 
 results = [[num / sum(brackets) * 100 for num in brackets] for brackets in raws]
 number_results = {questions[i]: raws[i] for i in range(len(questions))}
@@ -470,6 +470,7 @@ def survey(number_results, percentage_results, category_names):
     category_colors = palette
 
     fig, ax = plt.subplots(figsize=(9.2, 5))
+    fig.suptitle('Methods by Age')
     ax.invert_yaxis()
     ax.xaxis.set_visible(False)
     ax.set_xlim(0, np.sum(data, axis=1).max())
@@ -483,14 +484,14 @@ def survey(number_results, percentage_results, category_names):
         numbers = np.array(list(number_results.values()))[:, i]
 
         r, g, b = color
-        text_color = 'white' if r * g * b < 0.5 else 'darkgrey'
+        text_color = "white" if r * g * b < 0.5 else "darkgrey"
         text_label = zip(xcenters, numbers)
         for y, (x, c) in enumerate(text_label):
             alpha = 1 if c != 0 else 0
             ax.text(x, y, str(int(c)),
-                    ha='center', va='center', color=text_color, alpha=alpha)
+                    ha="center", va="center", color=text_color, alpha=alpha)
     ax.legend(ncol=5, bbox_to_anchor=(0, 1),
-              loc='lower left', fontsize='small')
+              loc="lower left", fontsize="small")
     return fig, ax
 
 
@@ -499,4 +500,5 @@ survey(number_results, percentage_results, category_names)
 plt.tight_layout()
 plt.show()
 ```
-![0 5](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/16e93aa0-d58d-4081-9bed-29ad2d1e6ccd)
+
+![0 5](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/f8c529c2-091e-43bb-9f95-3a17095b98e3)
