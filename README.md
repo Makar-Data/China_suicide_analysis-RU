@@ -1,4 +1,3 @@
-![image](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/edc0d96c-7763-49c8-91f6-047add611455)
 # Suicide Analysis Project
 
 Аналитический обзор [статистики суицидов](https://www.kaggle.com/datasets/utkarshx27/suicide-attempts-in-shandong-china) в Шаньдуне, Китай (2009-2011).
