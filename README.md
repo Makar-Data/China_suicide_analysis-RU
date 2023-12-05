@@ -359,7 +359,7 @@ plt.title('Occupation distribution')
 plt.tight_layout()
 plt.show()
 ```
-![0 4 1](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/77b71403-d623-444b-9d14-5edcb4caefbc)
+![0 4 1](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/f5333097-efd3-42c4-b669-479a2a0dfd93)
 
 Аналогичный код был применён к распределению образования и методов:
 ![0 4 2](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/80f454d7-d7f3-4c9f-acfb-b2773b99d0d9)
