@@ -254,9 +254,11 @@ ORDER BY Yr, Mth;
 sql_query = pd.read_sql_query(query, conn)
 df = pd.DataFrame(sql_query)
 
+# Перевод дат в datetime формат для более лёгкого цветового выделения
 df['YrMth'] = pd.to_datetime(df['YrMth'])
 df['YrMth'] = df['YrMth'].dt.date.apply(lambda x: x.strftime('%Y-%m'))
 
+# Определение цветов для месяцев и составление легенды
 colors = {1: 'tab:blue', 2: 'tab:blue',
           3: 'tab:green', 4: 'tab:green', 5: 'tab:green',
           6: 'tab:red', 7: 'tab:red', 8: 'tab:red',
@@ -268,6 +270,7 @@ legend = [Patch(facecolor='tab:blue', edgecolor='tab:blue', label='Winter'),
           Patch(facecolor='tab:red', edgecolor='tab:red', label='Summer'),
           Patch(facecolor='tab:olive', edgecolor='tab:olive', label='Autumn'),]
 
+# Визуализация
 plt.style.use('seaborn')
 
 plt.bar(x=df['YrMth'], height=df['Cases'], color=[colors[i] for i in df['Mth']])
