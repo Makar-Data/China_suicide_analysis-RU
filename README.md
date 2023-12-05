@@ -421,6 +421,7 @@ ax2.legend(labels=df_died['Method'] + " " + "(" + df_died['Amount'].astype(str) 
 plt.tight_layout()  
 plt.show()
 ```
-![0 4 3 1](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/958a4a80-9b41-4577-adf9-f226504165f5)
+
+![0 4 3 1](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/8d3535dd-cc89-4453-b153-99863fea1660)
 
 
