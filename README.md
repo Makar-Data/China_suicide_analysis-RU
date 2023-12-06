@@ -425,86 +425,84 @@ ORDER BY Amount DESC;
 
 sql_query = pd.read_sql_query(query, conn)
 df = pd.DataFrame(sql_query)
-df.loc[df['Amount'] < 30, 'Occupation'] = 'other'
-df = df.groupby('Occupation')['Amount'].sum().reset_index().sort_values(by='Amount', ascending=False)
 
+# Визуализация
 palette = sns.color_palette('hls', len(df))
 plt.style.use('seaborn')
 
-plt.pie(df['Amount'],
-        labels=df['Occupation'] + ' ' + '(' + df['Amount'].astype(str) + ')',
-        colors=palette, autopct='%1.1f%%',
-        pctdistance=0.8, labeldistance=1.05,
-        wedgeprops={'edgecolor': 'black', 'linewidth': 0.8})
+fig, ax = plt.subplots()
+ax.pie(df['Amount'], autopct='%1.1f%%', pctdistance=0.8, colors=palette,
+              wedgeprops={'edgecolor': 'black', 'linewidth': 0.3})
 
-plt.title('Occupation distribution')
+fig.suptitle('Occupation Ratio')
+
+ax.legend(labels=df['Occupation'] + ' ' + '(' + df['Amount'].astype(str) + ')',
+          loc=(0.9, 0))
+
 plt.tight_layout()
 plt.show()
 ```
-![0 4 1](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/f5333097-efd3-42c4-b669-479a2a0dfd93)
+![Диаграмма профессий](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/a369e93f-9bd6-4926-81e8-ff0c36793aae)
 
 Аналогичный код был применён к распределению образования и методов:
-![0 4 2](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/80f454d7-d7f3-4c9f-acfb-b2773b99d0d9)
-![0 4 3](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/20312bdf-4c85-4597-8d90-cb2c59b7493d)
+![Диаграмма образования](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/642ea2a1-bf99-4b4e-9551-36c8d6191ce4)
+![Одна диаграмма методов](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/a2efdfd9-f8eb-4c54-9eb3-17e261ac95f6)
 
 Были рассмотрены методы по разным исходам
 ```Python
-import pyodbc as db  
-import pandas as pd  
-import matplotlib.pyplot as plt  
-import seaborn as sns   
-  
-conn = db.connect('Driver={SQL Server};'  
-                      'Server=Mai-PC\SQLEXPRESS;'                      'Database=T;'                      'Trusted_Connection=yes;')  
-  
-query = '''  SELECT Method, Died, COUNT(*) AS Amount  FROM suicide_china  GROUP BY Method, Died  
-ORDER BY Amount DESC;  '''  
-  
-sql_query = pd.read_sql_query(query, conn)  
-df = pd.DataFrame(sql_query)  
-  
-df_died = df.loc[df['Died'] == 1]  
-df_lived = df.loc[df['Died'] == 0]  
-  
-plt.style.use('seaborn')  
-palette = sns.color_palette('hls', df['Method'].nunique())  
-legs = df['Method'].unique()  
-colors = palette.as_hex()  
-  
-color_palette = {legs[i]: colors[i] for i in range(df['Method'].nunique())}  
-  
-lived_methods = df_lived['Method'].unique()  
-died_methods = df_died['Method'].unique()  
-  
-lived_palette = [color_palette[leg] for leg in lived_methods]  
-died_palette = [color_palette[leg] for leg in died_methods]  
-  
-fig = plt.figure()  
-fig.suptitle('Methods by Outcome')  
-  
-ax1 = fig.add_subplot(121)  
-ax1.set_title('Survived')  
-ax1.pie(df_lived['Amount'],  
-        colors=lived_palette, autopct='%1.1f%%',  
-        pctdistance=0.8, labeldistance=1.05,  
-        wedgeprops={'edgecolor': 'black', 'linewidth': 0.8})  
-ax1.legend(labels=df_lived['Method'] + ' ' + '(' + df_lived['Amount'].astype(str) + ')',  
-           loc=(0,-0.2), ncol=2)  
-  
-ax2 = fig.add_subplot(122)  
-ax2.set_title('Died')  
-ax2.pie(df_died['Amount'],  
-        colors=died_palette, autopct='%1.1f%%',  
-        pctdistance=0.8, labeldistance=1.05,  
-        wedgeprops={'edgecolor': 'black', 'linewidth': 0.8})  
-ax2.legend(labels=df_died['Method'] + ' ' + '(' + df_died['Amount'].astype(str) + ')',  
-           loc=(0,-0.2), ncol=2)  
-  
-plt.tight_layout()  
+import pyodbc as db
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+conn = db.connect('Driver={SQL Server};'
+                      'Server=Mai-PC\SQLEXPRESS;'
+                      'Database=T;'
+                      'Trusted_Connection=yes;')
+
+query = '''
+SELECT Method, Died, COUNT(*) AS Amount
+FROM suicide_china
+GROUP BY Method, Died
+ORDER BY Amount DESC;
+'''
+
+sql_query = pd.read_sql_query(query, conn)
+df = pd.DataFrame(sql_query)
+df_died = df.loc[df['Died'] == 1]
+df_lived = df.loc[df['Died'] == 0]
+
+# Визуализация
+plt.style.use('seaborn')
+palette = sns.color_palette('hls', len(df))
+signified = df['Method'].unique()
+signifiers = palette.as_hex()
+unified_palette = {signified[i]: signifiers[i] for i in range(df['Method'].nunique())}
+died_palette = [unified_palette[signified] for signified in df_died['Method'].unique()]
+lived_palette = [unified_palette[signified] for signified in df_lived['Method'].unique()]
+
+fig = plt.figure()
+fig.suptitle('Methods by Outcome')
+
+ax1 = fig.add_subplot(121)
+ax1.set_title('Died')
+ax1.pie(df_died['Amount'], autopct='%1.1f%%', pctdistance=0.8, colors=died_palette,
+              wedgeprops={'edgecolor': 'black', 'linewidth': 0.3})
+ax1.legend(labels=df_died['Method'] + ' ' + '(' + df_died['Amount'].astype(str) + ')',
+           loc=(0,-0.2), ncol=2)
+
+ax2 = fig.add_subplot(122)
+ax2.set_title('Survived')
+ax2.pie(df_lived['Amount'], autopct='%1.1f%%', pctdistance=0.8, colors=lived_palette,
+              wedgeprops={'edgecolor': 'black', 'linewidth': 0.3})
+ax2.legend(labels=df_lived['Method'] + ' ' + '(' + df_lived['Amount'].astype(str) + ')',
+           loc=(0,-0.2), ncol=2)
+
+plt.grid(visible=False)
+plt.tight_layout()
 plt.show()
 ```
-
-![0 4 3 1](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/8d3535dd-cc89-4453-b153-99863fea1660)
+![Две диаграммы методов](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/667f7595-9761-4fb2-a369-b9082e7b4eb4)
 
 Рассмотрение методов по возрастам
 ```Python
