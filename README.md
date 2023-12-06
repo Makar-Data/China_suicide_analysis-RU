@@ -286,7 +286,7 @@ plt.show()
 
 Видны сезонные тренды. В летние как правило фиксируется максимум случаев, а в зимние - минимум, что совпадает с мировыми наблюдениями https://en.wikipedia.org/wiki/Seasonal_effects_on_suicide_rates#:~:text=Research%20on%20seasonal%20effects%20on,months%20of%20the%20winter%20season
 
-Для ознакомления с демографическим составом датасета была сделана половозрастная пирамида, подразделённая на категории в зависимости от исхода попытки суицида.
+Для ознакомления с демографическим составом датасета была сделана половозрастная пирамида, подразделённая на категории в зависимости от исхода попытки суицида. Код во многом заимствован от [CoderzColumn](https://www.youtube.com/watch?v=yRFAslDEtgk&t=6s&ab_channel=CoderzColumn).
 ```Python
 import pyodbc as db
 import pandas as pd
