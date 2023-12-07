@@ -8,7 +8,7 @@
 
 ![Shandong](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/5cd5847d-c302-49ee-847b-ca991f723b70)
 <p align="center"> 
-	Карта Шаньдуня 2020 г. ([Meng et al, 2021](https://www.mdpi.com/2073-445X/10/6/639)) 
+Карта Шаньдуня 2020 г. ([Meng et al, 2021](https://www.mdpi.com/2073-445X/10/6/639)) 
 </p>
 
 Вопросы:
