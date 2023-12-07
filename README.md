@@ -446,6 +446,7 @@ plt.show()
 ![Диаграмма профессий](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/a369e93f-9bd6-4926-81e8-ff0c36793aae)
 
 Аналогичный код был применён к распределению образования и методов:
+
 ![Диаграмма образования](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/642ea2a1-bf99-4b4e-9551-36c8d6191ce4)
 ![Одна диаграмма методов](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/a2efdfd9-f8eb-4c54-9eb3-17e261ac95f6)
 
@@ -596,7 +597,7 @@ plt.show()
 
 Датасет даёт возможность применения двух типов статистических тестов: (1) независимых выборок; (2) категорических значений.
 
-Была составлена тепловая карта pvalue для полей со значениями-категориями. Был задействован Хи-тест независимости категорий.
+Был задействован Хи-тест независимости категорий. Была составлена тепловая карта pvalue для полей со значениями-категориями. Алгоритм визуализации заимстован у [Shafqaat Ahmad](https://medium.com/analytics-vidhya/constructing-heat-map-for-chi-square-test-of-independence-6d78aa2b140f) ([github](https://github.com/shafqaatahmad/chisquare-test-heatmap/tree/main)
 ```Python
 import pyodbc as db
 import pandas as pd
@@ -857,6 +858,7 @@ plt.show()
 ## Этап 4. Завершение и интерпретация результатов
 
 Выделение образования как наиболее важного предиктора летальности не было выявлено на предыдущих этапах анализа, но подтверждается при визуальном обследовании.
+
 ![Образование_по_исходам](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/95353b1b-e593-401b-afa6-03f41338e584)
 
 Для объяснения данного положения есть 3 основные гипотезы:
