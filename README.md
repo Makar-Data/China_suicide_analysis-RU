@@ -19,6 +19,7 @@
 3. ...
 4. ...
 5. ...
+   
 ---
 
 ## Этап 1. Чистка и преобразование данных
@@ -588,3 +589,265 @@ plt.show()
 
 Как результат EDA-исследования, (что узнали, как это поможет)
 Комментарии в код!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+---
+
+## Этап 3. Тестирование статистических гипотез
+
+Датасет даёт возможность применения двух типов статистических тестов: (1) независимых выборок; (2) категорических значений.
+
+Была составлена тепловая карта pvalue для полей со значениями-категориями. Был задействован Хи-тест независимости категорий.
+```Python
+import pyodbc as db
+import pandas as pd
+import numpy as np
+from scipy import stats
+import seaborn as sns
+import matplotlib.pylab as plt
+
+conn = db.connect('Driver={SQL Server};'
+                      'Server=Mai-PC\SQLEXPRESS;'
+                      'Database=T;'
+                      'Trusted_Connection=yes;')
+
+query = '''
+SELECT *
+FROM suicide_china;
+'''
+
+sql_query = pd.read_sql_query(query, conn)
+df = pd.DataFrame(sql_query)
+df.index = df['Person_ID']
+del df['Person_ID']
+del df['Age']
+del df['Mth']
+
+col_names = df.columns
+
+chi_matrix=pd.DataFrame(df,columns=col_names,index=col_names)
+
+outercnt=0
+innercnt=0
+for icol in col_names:
+    for jcol in col_names:
+        mycrosstab=pd.crosstab(df[icol],df[jcol])
+        stat, p, dof, expected=stats.chi2_contingency(mycrosstab)
+        chi_matrix.iloc[outercnt,innercnt]=round(p,3)
+        cntexpected=expected[expected<5].size
+        perexpected=((expected.size-cntexpected)/expected.size)*100
+        if perexpected < 20:
+            chi_matrix.iloc[outercnt, innercnt] = 2
+        if icol == jcol:
+            chi_matrix.iloc[outercnt, innercnt] = 0.00
+        innercnt = innercnt + 1
+    outercnt = outercnt + 1
+    innercnt = 0
+
+plt.style.use('seaborn')
+fig = sns.heatmap(chi_matrix.astype(np.float64), annot=True, linewidths=0.1, cmap='coolwarm_r',
+            annot_kws={"fontsize": 8}, cbar_kws={'label': 'pvalue'})
+
+fig.set_title('Chi2 Independence Test Pvalues')
+plt.tight_layout()
+plt.show()
+```
+![Chi_heatmap](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/b74fcc14-2085-4115-955b-27aea07c81ae)
+
+Непрерывные данные представлены только полями возрастов и месяцев. Для выявления статистической значимости различий в распределении возрастов лиц, совершивших попытку суицида с летальным исходом, и выживших был применён Манна-Уитни-U-тест. Для исключения возможности использования Стьюдента-Т-теста были проведены Шапиро-Уилка-тест и Колмогоров-Смирнов-тест соответствия распределений нормальному распределению. Тесты выявили несоответствие распределений нормальности, исключив возможность применения параметрических тестов. Визуально были сравнены формы распределений [[ssylka]]. Их несоответствие требует интерпретации результатов Манна-Уитни-U-теста как отражающих ситуацию стохастического доминирования значений одного распределения над значениями другого.
+
+Проведён тест, выявивший наличие статистически значимой разницы. Распределения занесены на один график в виде гистограмм разного цвета.
+```Python
+import numpy as np
+import pyodbc as db
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+conn = db.connect('Driver={SQL Server};'
+                      'Server=Mai-PC\SQLEXPRESS;'
+                      'Database=T;'
+                      'Trusted_Connection=yes;')
+
+query = '''
+SELECT Age, Died
+FROM suicide_china;
+'''
+
+sql_query = pd.read_sql_query(query, conn)
+df = pd.DataFrame(sql_query)
+
+# Разделение категорий на разные группы
+df_died = df.loc[df['Died'] == 1]
+df_lived = df.loc[df['Died'] == 0]
+dfs = [df['Age'], df_died['Age'], df_lived['Age']]
+
+# Тесты соответствия нормальному распределению
+print('Shapiro-Wilk Test:')
+for dataframe in dfs:
+    print(stats.shapiro(dataframe))
+
+print('\nKolmogorov-Smirnov Test:')
+for dataframe in dfs:
+    dist = getattr(stats, 'norm')
+    param = dist.fit(dataframe)
+    result = stats.kstest(dataframe, 'norm', args=param)
+    print(result)
+
+# Тест Манна-Уитни
+sample1 = df_died['Age']
+sample2 = df_lived['Age']
+
+results = stats.mannwhitneyu(sample1, sample2)
+u = results[0]
+mean = (len(sample1) * len(sample2)) / 2
+std = np.sqrt((len(sample1) * len(sample2) * (len(sample1) + len(sample2) + 1)) / 12)
+z = (u - mean) / std
+
+print('\nMann-Whitney Test:')
+print(results)
+print('Z-critical:', z)
+
+# Визуализация
+dfd = df_died.groupby(['Age'], as_index=False).agg('count')
+dfd.rename(columns={'Died': 'Amount'}, inplace=True)
+dfl = df_lived.groupby(['Age'], as_index=False).agg('count')
+dfl.rename(columns={'Died': 'Amount'}, inplace=True)
+
+plt.style.use('seaborn')
+
+fig1 = plt.figure()
+
+ax1 = fig1.add_subplot(121)
+ax1.bar(dfd['Age'], dfd['Amount'], alpha=0.5)
+ax1.set_xlabel('Age')
+ax1.set_ylabel('Cases')
+ax2 = fig1.add_subplot(122)
+ax2.bar(dfl['Age'], dfl['Amount'], alpha=0.5)
+ax2.set_xlabel('Age')
+fig1.suptitle('Age Distribution')
+plt.tight_layout()
+
+fig2 = plt.figure()
+
+ax3 = fig2.add_subplot()
+ax3.bar(dfd['Age'], dfd['Amount'], alpha=0.5, color='tab:red', label='Died')
+ax3.bar(dfl['Age'], dfl['Amount'], alpha=0.5, color='tab:blue', label='Survived')
+ax3.set_ylabel('Cases')
+fig2.suptitle('Age Distribution')
+plt.legend()
+plt.tight_layout()
+
+fig3 = plt.figure()
+
+ax4 = fig3.add_subplot()
+ax4.boxplot([dfd['Age'], dfl['Age']])
+plt.xticks([1, 2], ['Died', 'Survived'])
+fig3.suptitle('Age Distribution')
+plt.tight_layout()
+
+plt.show()
+```
+![Возрасты по исходам (один)](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/656371d3-cb34-4c06-866a-5d1bfce21db9)
+
+---
+
+## Этап 4. Моделирование
+
+Тип данных датасета отсавил возможность построения моделей только логистической регрессии.
+
+Для использования в модели предикторы были отобраны на основе случайного леса. Фичи, преодолевшие условно установленный порог важности в 0.10 (Education = 0.27, Method = 0.24, Age_Interval = 0.24), перешли на последующие стадии процедуры. OOB случайного леса равнялся 0.80.
+
+Датасет был разделён на три совокупности: тренировочную, валидирующую и тестовую в пропорции 70-15-15 соответственно.
+
+На основе тренировочной группы, intercept равнялся 2.81, коэффициенты: Age_Interval = 0.10, Education = -1.01, Method = -0.46.
+
+На валидирующей и тестовой выборках были сделаны confusion matrix. В последнем случае f1-score accuracy равнялся 0.78. Матрица была визуализирована.
+```Python
+import numpy as np
+import pyodbc as db
+import pandas as pd
+from sklearn import metrics
+from sklearn import linear_model
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+import seaborn as sns
+import matplotlib.pylab as plt
+
+conn = db.connect('Driver={SQL Server};'
+                      'Server=Mai-PC\SQLEXPRESS;'
+                      'Database=T;'
+                      'Trusted_Connection=yes;')
+
+query = '''
+SELECT Sex, Age_Interval, Quart, Urban, Education, Occupation, Method, Died
+FROM suicide_china;
+'''
+
+sql_query = pd.read_sql_query(query, conn)
+df = pd.DataFrame(sql_query)
+df = df.apply(preprocessing.LabelEncoder().fit_transform)
+
+# X - предикторы, y - целевое значение (Died = 0/1)
+all_X = df.iloc[:,:-1]
+y = df.iloc[:,-1]
+
+# Выбор наиболее значимых предикторов через OOB случайного леса
+X_train_sel, X_test_sel, y_train_sel, y_test_sel = train_test_split(all_X, y, test_size=0.3, random_state=42)
+rfc = RandomForestClassifier(random_state=0, criterion='gini', oob_score=True)
+rfc.fit(X_train_sel, y_train_sel)
+
+feature_names = df.columns[:-1]
+assessed_X = []
+for feature in zip(feature_names, rfc.feature_importances_):
+    print(feature)
+    assessed_X.append(feature)
+print('OOB:', rfc.oob_score_)
+
+predictors = [predictor for (predictor, score) in assessed_X if score > 0.1]
+X = df[predictors]
+
+# Построение модели
+X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.3, random_state=42)
+X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
+
+print("\ntrain sample:", len(X_train))
+print("val sample:", len(X_val))
+print("test sample:", len(X_test))
+
+log_model = linear_model.LogisticRegression(solver='lbfgs')
+log_model.fit(X=X_train, y=y_train)
+print('\nIntercept:', log_model.intercept_)
+print('Predictors:', predictors)
+print('Coefficient:', log_model.coef_)
+
+val_prediction = log_model.predict(X_val)
+print('\nValidation group matrix:')
+print(metrics.confusion_matrix(y_true=y_val, y_pred=val_prediction))
+print(metrics.classification_report(y_true=y_val, y_pred=val_prediction))
+
+test_predition = log_model.predict(X_test)
+confmatrix = metrics.confusion_matrix(y_true=y_test, y_pred=test_predition)
+print('\nTest group matrix:')
+print(confmatrix)
+print(metrics.classification_report(y_true=y_test, y_pred=test_predition))
+
+# Визуализация матрицы
+plt.style.use('seaborn')
+class_names = [0, 1]
+
+fig, ax = plt.subplots()
+
+tick_marks = np.arange(len(class_names))
+plt.xticks(tick_marks, class_names)
+plt.yticks(tick_marks, class_names)
+sns.heatmap(pd.DataFrame(confmatrix), annot=True, cmap='Blues', fmt='g')
+ax.xaxis.set_label_position('top')
+plt.title('Confusion matrix', y = 1.1)
+plt.ylabel('Actual outcome')
+plt.xlabel('Predicted outcome')
+
+plt.tight_layout()
+plt.show()
+```
+![Confusion_matrix](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/b393fdff-3700-4d68-af71-804650243045)
