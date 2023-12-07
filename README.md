@@ -597,7 +597,7 @@ plt.show()
 
 Датасет даёт возможность применения двух типов статистических тестов: (1) независимых выборок; (2) категорических значений.
 
-Был задействован Хи-тест независимости категорий. Была составлена тепловая карта pvalue для полей со значениями-категориями. Алгоритм визуализации заимстован у [Shafqaat Ahmad](https://medium.com/analytics-vidhya/constructing-heat-map-for-chi-square-test-of-independence-6d78aa2b140f) ([github](https://github.com/shafqaatahmad/chisquare-test-heatmap/tree/main)
+Был задействован Хи-тест независимости категорий. Была составлена тепловая карта pvalue для полей со значениями-категориями. Алгоритм визуализации заимстован у [Shafqaat Ahmad](https://medium.com/analytics-vidhya/constructing-heat-map-for-chi-square-test-of-independence-6d78aa2b140f), [github](https://github.com/shafqaatahmad/chisquare-test-heatmap/tree/main).
 ```Python
 import pyodbc as db
 import pandas as pd
