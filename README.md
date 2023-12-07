@@ -7,7 +7,9 @@
 По сравнению с аграрным, в индустриальном и информационном обществах фиксируется большое количество психических расстройтсв и суицидов. Анализ демографических данных Шаньдуня позволит прийти к пониманию факторов, влияющих на суицидальное поведение человека, и провести сравнение показателей между городской и сельской местностью.
 
 ![Shandong](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/5cd5847d-c302-49ee-847b-ca991f723b70)
+<p align="center">
 Карта 2020 г. ([Meng et al, 2021](https://www.mdpi.com/2073-445X/10/6/639))
+</p>
 
 Вопросы:
 - Какие демографические группы риска можно выделить?
@@ -600,7 +602,7 @@ plt.show()
 
 Датасет даёт возможность применения двух типов статистических тестов: (1) независимых выборок; (2) категорических значений.
 
-Был задействован Хи-тест независимости категорий. Была составлена тепловая карта pvalue для полей со значениями-категориями. Алгоритм визуализации заимстован у [Shafqaat Ahmad](https://medium.com/analytics-vidhya/constructing-heat-map-for-chi-square-test-of-independence-6d78aa2b140f), [github](https://github.com/shafqaatahmad/chisquare-test-heatmap/tree/main).
+Был задействован Хи-тест независимости категорий. Была составлена тепловая карта pvalue для полей со значениями-категориями. Алгоритм визуализации заимстован у [Shafqaat Ahmad](https://medium.com/analytics-vidhya/constructing-heat-map-for-chi-square-test-of-independence-6d78aa2b140f), ([github](https://github.com/shafqaatahmad/chisquare-test-heatmap/tree/main)).
 ```Python
 import pyodbc as db
 import pandas as pd
