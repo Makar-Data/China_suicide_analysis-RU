@@ -249,7 +249,9 @@ FROM (
 - Наиболее распространённые методы женщин: другой яд (66% наблюдений использования относится к женщинам), утопление (68%), пестицид (54%); мужчин: неопределённый (63% наблюдений использования относится к мужчинам), повешание (61%), порезы (52%) [[16]]
 - Хотя выживаемость после употребления пестицида относительно высока, смертельность попыток в сельской местности несколько выше, чем в городах (51%, 40%) [[17]]
 
-Наблюдения были сгруппированы по годам и месяцам, а затемзанесены в сводную таблцицу [[19]]. С помощью Python и Pyodbc создан barplot хронологического распределения случаев:
+Наблюдения были сгруппированы по годам и месяцам, а затемзанесены в сводную таблцицу [[19]]. С помощью Python и Pyodbc создан barplot хронологического распределения случаев.
+
+Видны сезонные тренды. В летние как правило фиксируется максимум случаев, а в зимние - минимум. Это совпадает с мировыми наблюдениями. https://en.wikipedia.org/wiki/Seasonal_effects_on_suicide_rates#:~:text=Research%20on%20seasonal%20effects%20on,months%20of%20the%20winter%20season
 
 ![0 3](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/7973c6e6-1231-4e01-aea8-912edce9af13)
 ```Python
@@ -305,8 +307,6 @@ plt.legend(handles=legend, loc='upper left')
 plt.tight_layout()
 plt.show()
 ```
-
-Видны сезонные тренды. В летние как правило фиксируется максимум случаев, а в зимние - минимум. Это совпадает с мировыми наблюдениями. https://en.wikipedia.org/wiki/Seasonal_effects_on_suicide_rates#:~:text=Research%20on%20seasonal%20effects%20on,months%20of%20the%20winter%20season
 
 Для отражения демографического состава была сформирована половозрастная пирамида, подразделённая на категории в зависимости от исхода попытки суицида. Существенная часть кода заимствована у [CoderzColumn](https://www.youtube.com/watch?v=yRFAslDEtgk&t=6s&ab_channel=CoderzColumn).
 
@@ -408,7 +408,11 @@ plt.tight_layout()
 plt.show()
 ```
 
+Соотношение образования, профессий и методов отражены диаграммами, составленными по единому алгоритму.
 
+![Диаграмма образования](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/642ea2a1-bf99-4b4e-9551-36c8d6191ce4)
+![Диаграмма профессий](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/a369e93f-9bd6-4926-81e8-ff0c36793aae)
+![Одна диаграмма методов](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/a2efdfd9-f8eb-4c54-9eb3-17e261ac95f6)
 ```Python
 import pyodbc as db
 import pandas as pd
@@ -421,9 +425,9 @@ conn = db.connect('Driver={SQL Server};'
                       'Trusted_Connection=yes;')
 
 query = '''
-SELECT Occupation, COUNT(*) AS Amount
+SELECT Education, COUNT(*) AS Amount
 FROM suicide_china
-GROUP BY Occupation
+GROUP BY Education
 ORDER BY Amount DESC;
 '''
 
@@ -438,22 +442,17 @@ fig, ax = plt.subplots()
 ax.pie(df['Amount'], autopct='%1.1f%%', pctdistance=0.8, colors=palette,
               wedgeprops={'edgecolor': 'black', 'linewidth': 0.3})
 
-fig.suptitle('Occupation Ratio')
+fig.suptitle('Education Ratio')
 
-ax.legend(labels=df['Occupation'] + ' ' + '(' + df['Amount'].astype(str) + ')',
+ax.legend(labels=df['Education'] + ' ' + '(' + df['Amount'].astype(str) + ')',
           loc=(0.9, 0))
 
 plt.tight_layout()
 plt.show()
 ```
-![Диаграмма профессий](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/a369e93f-9bd6-4926-81e8-ff0c36793aae)
 
-Аналогичный код был применён к распределению образования и методов:
-
-![Диаграмма образования](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/642ea2a1-bf99-4b4e-9551-36c8d6191ce4)
-![Одна диаграмма методов](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/a2efdfd9-f8eb-4c54-9eb3-17e261ac95f6)
-
-Были рассмотрены методы по разным исходам
+Отдельно составлено две диаграммы методов в соответствии с исходом попытки суицида.
+![Две диаграммы методов](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/667f7595-9761-4fb2-a369-b9082e7b4eb4)
 ```Python
 import pyodbc as db
 import pandas as pd
@@ -507,7 +506,6 @@ plt.grid(visible=False)
 plt.tight_layout()
 plt.show()
 ```
-![Две диаграммы методов](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/667f7595-9761-4fb2-a369-b9082e7b4eb4)
 
 Рассмотрение методов по возрастам
 ```Python
