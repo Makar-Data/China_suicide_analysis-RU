@@ -99,8 +99,7 @@ INTO suicide_china
 FROM suicide_china_original;
 ```
 
-
-Поля месяцев и возрастов были сложно читаемы из-за большого количества уникальных значений. Для упрощения восприятия значения были объединены в кварталы и возрастные интервалы соответственно:
+Поля месяцев и возрастов сложно читаемы из-за большого количества уникальных значений. Для простоты восприятия они были объединены в кварталы и возрастные интервалы соответственно:
 - Создание колонки годовых кварталов на основе колонки месяцев
 - Создание колонки возрастных интервалов на основе колонки возрастов
 ```SQL
@@ -168,19 +167,19 @@ ON suicide_china.Person_ID = ints.Person_ID;
 
 Полный SQL документ [[2]](https://github.com/Makar-Data/China_suicide_analysis-RU/blob/main/1.%20%D0%A7%D0%B8%D1%81%D1%82%D0%BA%D0%B0%20%D0%B8%20%D0%BF%D1%80%D0%B5%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/Data_clean.sql) приведён в репозитории.
 
-Была сформирована таблица suicide_china [[3]](suicide_china.rpt), готовая к анализу.
+В результате очистки была сформирована таблица suicide_china [[3]](suicide_china.rpt), готовая к анализу.
 
 ---
 
 ## Этап 2. Exploratory Data Analysis
 Для практики вместо сводных таблиц Pandas в основном использовались таблицы SQL Server. 
 
-Было проведено ознакомление с уникальными категориями.
+Сначала было проведено ознакомление с уникальными категориями датасета.
 
 ![0 4](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/78d9ae79-9350-4e32-8abb-ba088969fa83)
 
 Для EDA преимущественно применялись вариации трёх таблиц:
-1. Количество и пропорция наблюдений по полю [[4]](https://github.com/Makar-Data/China_suicide_analysis-RU/blob/main/2.%20EDA/2.Table1.sql)
+1. Количество и пропорция значений по полю [[4]](https://github.com/Makar-Data/China_suicide_analysis-RU/blob/main/2.%20EDA/2.Table1.sql):
    
 ![image](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/5d617278-80e7-4993-8d07-c319b93f6341)
 ```SQL
@@ -190,7 +189,7 @@ GROUP BY Sex
 ORDER BY Perc DESC;
 ```
 
-2. Количество и пропорция наблюдений по двум полям [[5]](https://github.com/Makar-Data/China_suicide_analysis-RU/blob/main/2.%20EDA/3.Table2.sql)
+2. Количество и пропорция значений по двум полям [[5]](https://github.com/Makar-Data/China_suicide_analysis-RU/blob/main/2.%20EDA/3.Table2.sql):
 
 ![image](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/e032fa95-efbc-455c-b301-49fde98fc8b2)
 ```SQL
@@ -217,7 +216,7 @@ ORDER BY Total DESC;
 ```
 
 
-3. Пропорция исходов по переменной [[6]](https://github.com/Makar-Data/China_suicide_analysis-RU/blob/main/2.%20EDA/4.Table3.sql)
+3. Пропорция исходов по переменной [[6]](https://github.com/Makar-Data/China_suicide_analysis-RU/blob/main/2.%20EDA/4.Table3.sql):
 
 ![image](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/e94c5474-f805-4f60-9cc5-0e65045b68a4)
 ```SQL
@@ -239,9 +238,12 @@ FROM (
 
 Помимо приведённых таблиц, были рассмотрены другие комбинации данных [[7]](https://github.com/Makar-Data/China_suicide_analysis-RU/tree/main/2.%20EDA/%D0%98%D0%B7%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F).
 
-Наблюдения были сгруппированы по годам и месяцам, а затем занесены в сводную таблицу. С помощью Python и Pyodbc создан barplot хронологического распределения случаев.
+С помощью Python и Pyodbc был создан ряд гистограмм. Некоторые из них:
 
-Видны сезонные тренды. В летние как правило фиксируется максимум случаев, а в зимние - минимум. Это совпадает с мировыми наблюдениями. https://en.wikipedia.org/wiki/Seasonal_effects_on_suicide_rates#:~:text=Research%20on%20seasonal%20effects%20on,months%20of%20the%20winter%20season
+![6 1 Возрастное_распределение](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/76bf5fe8-fda1-4cb5-8294-91153ef98797)
+![6 5 Распределение_профессий](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/2dd6b829-4a6f-4075-b5a4-194ea018ff4c)
+
+Был образован barplot хронологического распределения наблюдений по временам года. Видны сезонные тренды. В летние как правило фиксируется максимум случаев, а в зимние - минимум. Это совпадает с мировыми наблюдениями. https://en.wikipedia.org/wiki/Seasonal_effects_on_suicide_rates#:~:text=Research%20on%20seasonal%20effects%20on,months%20of%20the%20winter%20season
 
 ![0 3](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/7973c6e6-1231-4e01-aea8-912edce9af13)
 ```Python
