@@ -28,14 +28,14 @@
 ## Этап 1. Чистка и преобразование данных
 
 Датасет suicide_china_original [[1]](suicide_china_original.csv) изначально находится в приемлемом состоянии. Проведены несложные процедуры очистки с SQL Server:
-- Проверка на дубликаты колонок
-- Проверка на дубликаты наблюдений
-- Проверка на NaN-значения (взято у [hkravitz](https://stackoverflow.com/a/37406536))
-- Переименование полей с названиями, совпадающими с синтаксисом SQL
-- Перевод значений в строчные буквы
-- Удаление лишних пробелов
-- Перевод бинарных значений в 1 и 0
-- Перенос очищенных данных в новую таблицу для сохранения целостности оригинала
+- Проверка на дубликаты колонок;
+- Проверка на дубликаты наблюдений;
+- Проверка на NaN-значения (взято у [hkravitz](https://stackoverflow.com/a/37406536));
+- Переименование полей с названиями, совпадающими с синтаксисом SQL;
+- Перевод значений в строчные буквы;
+- Удаление лишних пробелов;
+- Перевод бинарных значений в 1 и 0;
+- Перенос очищенных данных в новую таблицу для сохранения целостности оригинала.
 ```SQL
 --Проверка равенства column1 и Person_ID--
 SELECT *, CASE WHEN entries = of_them_equal THEN 1 ELSE 0 END AS col_equality_check
@@ -100,8 +100,8 @@ FROM suicide_china_original;
 ```
 
 Поля месяцев и возрастов сложно читаемы из-за большого количества уникальных значений. Для простоты восприятия они были объединены в кварталы и возрастные интервалы соответственно:
-- Создание колонки годовых кварталов на основе колонки месяцев
-- Создание колонки возрастных интервалов на основе колонки возрастов
+- Создание колонки годовых кварталов на основе колонки месяцев;
+- Создание колонки возрастных интервалов на основе колонки возрастов.
 ```SQL
 --Кварталы--
 ALTER TABLE suicide_china
@@ -175,7 +175,6 @@ ON suicide_china.Person_ID = ints.Person_ID;
 Для практики вместо сводных таблиц Pandas в основном использовались таблицы SQL Server. 
 
 Сначала было проведено ознакомление с уникальными категориями датасета.
-
 ![0 4](https://github.com/Makar-Data/China_suicide_analysis/assets/152608115/78d9ae79-9350-4e32-8abb-ba088969fa83)
 
 Для EDA преимущественно применялись вариации трёх таблиц:
@@ -252,6 +251,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 
+# Взаимодействие с SQL Server
 conn = db.connect('Driver={SQL Server};'
                       'Server=Mai-PC\SQLEXPRESS;'
                       'Database=T;'
@@ -308,6 +308,7 @@ import pyodbc as db
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# Взаимодействие с SQL Server
 conn = db.connect('Driver={SQL Server};'
                       'Server=Mai-PC\SQLEXPRESS;'
                       'Database=T;'
@@ -411,6 +412,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# Взаимодействие с SQL Server
 conn = db.connect('Driver={SQL Server};'
                       'Server=Mai-PC\SQLEXPRESS;'
                       'Database=T;'
@@ -451,6 +453,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# Взаимодействие с SQL Server
 conn = db.connect('Driver={SQL Server};'
                       'Server=Mai-PC\SQLEXPRESS;'
                       'Database=T;'
@@ -509,6 +512,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# Взаимодействие с SQL Server
 conn = db.connect('Driver={SQL Server};'
                       'Server=Mai-PC\SQLEXPRESS;'
                       'Database=T;'
@@ -521,10 +525,11 @@ FROM suicide_china
 
 sql_query = pd.read_sql_query(query, conn)
 df = pd.DataFrame(sql_query)
+
+# Трансформация данных в формат, пригодный для построения визуализации
 needed = df.pivot(index='Person_ID', columns='Age_Interval', values='Method')
 new_cols = [col for col in needed.columns if col != '100-104'] + ['100-104']
 needed = needed[new_cols]
-
 category_names = ['pesticide', 'hanging', 'other poison', 'poison unspec', 'unspecified', 'cutting', 'drowning', 'jumping', 'others']
 questions = list(needed.columns.values)
 raws = []
@@ -542,6 +547,7 @@ results = [[num / sum(brackets) * 100 for num in brackets] for brackets in raws]
 number_results = {questions[i]: raws[i] for i in range(len(questions))}
 percentage_results = {questions[i]: results[i] for i in range(len(questions))}
 
+# Визуализация
 palette = sns.color_palette('hls', df['Method'].nunique())
 
 def survey(number_results, percentage_results, category_names):
@@ -671,6 +677,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy import stats
 
+# Взаимодействие с SQL Server
 conn = db.connect('Driver={SQL Server};'
                       'Server=Mai-PC\SQLEXPRESS;'
                       'Database=T;'
@@ -781,6 +788,7 @@ from sklearn.ensemble import RandomForestClassifier
 import seaborn as sns
 import matplotlib.pylab as plt
 
+# Взаимодействие с SQL Server
 conn = db.connect('Driver={SQL Server};'
                       'Server=Mai-PC\SQLEXPRESS;'
                       'Database=T;'
@@ -800,7 +808,7 @@ df = df.apply(label_encoder.fit_transform)
 all_X = df.iloc[:,:-1]
 y = df.iloc[:,-1]
 
-# Выбор наиболее значимых предикторов через OOB случайного леса
+# Выбор наиболее значимых предикторов через случайный лес
 X_train_sel, X_test_sel, y_train_sel, y_test_sel = train_test_split(all_X, y, test_size=0.3, random_state=42)
 rfc = RandomForestClassifier(random_state=0, criterion='gini', oob_score=True)
 rfc.fit(X_train_sel, y_train_sel)
