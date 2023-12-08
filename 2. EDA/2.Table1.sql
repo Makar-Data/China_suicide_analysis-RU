@@ -1,0 +1,40 @@
+--������� 1--
+SELECT Sex, COUNT(*) AS Amount, ROUND(CAST(COUNT(*) AS FLOAT)*100/SUM(CAST(COUNT(*) AS FLOAT)) OVER(), 2) AS Perc
+FROM suicide_china 
+GROUP BY Sex
+ORDER BY Perc DESC;
+
+SELECT Age_Interval, COUNT(*) AS Amount, ROUND(CAST(COUNT(*) AS FLOAT)*100/SUM(CAST(COUNT(*) AS FLOAT)) OVER(), 2) AS Perc
+FROM suicide_china 
+GROUP BY Age_Interval
+ORDER BY Perc DESC;
+
+SELECT Urban, COUNT(*) AS Amount, ROUND(CAST(COUNT(*) AS FLOAT)*100/SUM(CAST(COUNT(*) AS FLOAT)) OVER(), 2) AS Perc
+FROM suicide_china 
+GROUP BY Urban
+ORDER BY Urban DESC;
+
+SELECT Education, COUNT(*) AS Amount, ROUND(CAST(COUNT(*) AS FLOAT)*100/SUM(CAST(COUNT(*) AS FLOAT)) OVER(), 2) AS Perc
+FROM suicide_china
+GROUP BY Education
+ORDER BY Perc DESC;
+
+SELECT Occupation, COUNT(*) AS Amount, ROUND(CAST(COUNT(*) AS FLOAT)*100/SUM(CAST(COUNT(*) AS FLOAT)) OVER(), 2) AS Perc
+FROM suicide_china 
+GROUP BY Occupation
+ORDER BY Perc DESC;
+
+SELECT Method, COUNT(*) AS Amount, ROUND(CAST(COUNT(*) AS FLOAT)*100/SUM(CAST(COUNT(*) AS FLOAT)) OVER(), 2) AS Perc
+FROM suicide_china 
+GROUP BY Method
+ORDER BY Perc DESC;
+
+SELECT Hospitalised, COUNT(*) AS Amount, ROUND(CAST(COUNT(*) AS FLOAT)*100/SUM(CAST(COUNT(*) AS FLOAT)) OVER(), 2) AS Perc
+FROM suicide_china 
+GROUP BY Hospitalised
+ORDER BY Hospitalised DESC;
+
+SELECT Died, COUNT(*) AS Amount, ROUND(CAST(COUNT(*) AS FLOAT)*100/SUM(CAST(COUNT(*) AS FLOAT)) OVER(), 2) AS Perc
+FROM suicide_china 
+GROUP BY Died
+ORDER BY Died DESC;
