@@ -1,7 +1,7 @@
 # Suicide Analysis Project
 
 Аналитический обзор [статистики суицидов](https://www.kaggle.com/datasets/utkarshx27/suicide-attempts-in-shandong-china) в Шаньдуне, Китай (2009-2011).
-# SSYLKY POTOM
+# SSYLKY POTOM [asdasdasdasd](https://github.com/Makar-Data/China_suicide_analysis-RU/blob/main/%D0%A7%D0%B8%D1%81%D1%82%D0%BA%D0%B0%20%D0%B8%20%D0%BF%D1%80%D0%B5%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/r)
 
 Цель - практика навыков чистки данных, проверки статистических гипотез, создания регрессионных моделей и визуализации данных.
 
