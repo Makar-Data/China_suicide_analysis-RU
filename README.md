@@ -624,7 +624,7 @@ plt.show()
 
 Датасет даёт возможность применения двух типов статистических тестов: (1) для независимых выборок; (2) для категорических значений.
 
-Для определения связи категорических значений был использован Хи-тест независимости категорий. Учитывая проблему множественных сравнений, была проведения Бонферрони коррекция pvalue. Составлена тепловая карта pvalue для соответствующих полей. Алгоритм визуализации заимствован у [Shafqaat Ahmad](https://medium.com/analytics-vidhya/constructing-heat-map-for-chi-square-test-of-independence-6d78aa2b140f), ([github](https://github.com/shafqaatahmad/chisquare-test-heatmap/tree/main)).
+Для определения связи категорических значений был использован Хи-тест независимости категорий. Учитывая проблему множественных сравнений, была проведения Бонферрони коррекция pvalue. Составлена тепловая карта pvalue для соответствующих полей. Алгоритм визуализации заимствован у [Shafqaat Ahmad](https://medium.com/analytics-vidhya/constructing-heat-map-for-chi-square-test-of-independence-6d78aa2b140f), ([github](https://github.com/shafqaatahmad/chisquare-test-heatmap/tree/main)). В качестве минимальной точки палитры было взято скорректированное значение pvalue.
 
 ![1 Chi_heatmap](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/1fd38f69-a014-4206-a9d3-fe762945020b)
 ```Python
