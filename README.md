@@ -624,9 +624,9 @@ plt.show()
 
 Датасет даёт возможность применения двух типов статистических тестов: (1) для независимых выборок; (2) для категорических значений.
 
-Для определения связи категорических значений был использован Хи-тест независимости категорий. Составлена тепловая карта pvalue для соответствующих полей. Алгоритм визуализации заимствован у [Shafqaat Ahmad](https://medium.com/analytics-vidhya/constructing-heat-map-for-chi-square-test-of-independence-6d78aa2b140f), ([github](https://github.com/shafqaatahmad/chisquare-test-heatmap/tree/main)).
+Для определения связи категорических значений был использован Хи-тест независимости категорий. Учитывая проблему множественных сравнений, была проведения Бонферрони коррекция pvalue. Составлена тепловая карта pvalue для соответствующих полей. Алгоритм визуализации заимствован у [Shafqaat Ahmad](https://medium.com/analytics-vidhya/constructing-heat-map-for-chi-square-test-of-independence-6d78aa2b140f), ([github](https://github.com/shafqaatahmad/chisquare-test-heatmap/tree/main)).
 
-![Chi_heatmap](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/b74fcc14-2085-4115-955b-27aea07c81ae)
+![1 Chi_heatmap](https://github.com/Makar-Data/China_suicide_analysis-RU/assets/152608115/1fd38f69-a014-4206-a9d3-fe762945020b)
 ```Python
 import pyodbc as db
 import pandas as pd
@@ -651,10 +651,12 @@ df.index = df['Person_ID']
 del df['Person_ID']
 del df['Age']
 del df['Mth']
-
 col_names = df.columns
 
 chi_matrix=pd.DataFrame(df,columns=col_names,index=col_names)
+
+pvalue = 0.05
+bonferroni = pvalue / len(col_names)
 
 outercnt=0
 innercnt=0
@@ -674,10 +676,10 @@ for icol in col_names:
     innercnt = 0
 
 plt.style.use('seaborn')
-fig = sns.heatmap(chi_matrix.astype(np.float64), annot=True, linewidths=0.1, cmap='coolwarm_r',
+fig = sns.heatmap(chi_matrix.astype(np.float64), annot=True, linewidths=0.1, cmap='coolwarm_r', vmin=bonferroni,
             annot_kws={"fontsize": 8}, cbar_kws={'label': 'pvalue'})
 
-fig.set_title('Chi2 Independence Test Pvalues')
+fig.set_title('Chi2 Independence \n(pvalue={} with Bonferroni corr.)'.format(bonferroni))
 plt.tight_layout()
 plt.show()
 ```
